@@ -7,7 +7,7 @@ end
 
 When(/^I enter invalid username$/) do
   username = @browser.text_field(:id, "Email")
-  username.set 'Shinok'
+  username.when_present.set 'Shinok'
   if @browser.button(:id =>"next").present?
     @browser.button(:id =>"next").click
   end
@@ -15,9 +15,10 @@ end
 
 And(/^I enter invalid password$/) do
   password = @browser.text_field(:id, "Passwd")
-  password.set 'Shinok'
+  password.when_present.set 'Shinok'
 end
 
 Then(/^I should see error message$/) do
-  @browser.button(:id => 'signIn').click
+  @browser.button(:id => 'signIn').when_present.click
+  @browser.span(:id=>'errormsg_0_Passwd').text.include? "The email and password you entered don't match."
 end
